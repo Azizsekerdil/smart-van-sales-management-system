@@ -786,7 +786,7 @@ export default function HotSale() {
                           min={1}
                           step="1"
                           aria-label={t('common.quantity')}
-                          className="tabular w-14 border-0 bg-transparent p-0 text-center text-sm outline-none"
+                          className="tabular w-14 border-0 bg-transparent p-0 text-center text-sm outline-hidden"
                           value={line.quantity}
                           onChange={(e) =>
                             patchLine(i, { quantity: Math.max(1, Number(e.target.value) || 1) })
