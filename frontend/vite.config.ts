@@ -65,10 +65,16 @@ export default defineConfig({
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          charts: ['recharts'],
-          map: ['leaflet'],
+        // Vite 8 (Rolldown) no longer accepts the object form of manualChunks;
+        // the function form keeps the same react/charts/map chunk split.
+        manualChunks(id: string) {
+          if (!id.includes('node_modules')) return undefined
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom)[\\/]/.test(id)) {
+            return 'react'
+          }
+          if (/[\\/]node_modules[\\/]recharts[\\/]/.test(id)) return 'charts'
+          if (/[\\/]node_modules[\\/]leaflet[\\/]/.test(id)) return 'map'
+          return undefined
         },
       },
     },

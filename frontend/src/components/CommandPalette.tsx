@@ -158,7 +158,7 @@ export function CommandPalette({ open, onClose }: { open: boolean; onClose: () =
               }
             }}
             placeholder={t('common.searchPlaceholder')}
-            className="flex-1 bg-transparent py-3.5 text-sm outline-none placeholder:text-shell-400"
+            className="flex-1 bg-transparent py-3.5 text-sm outline-hidden placeholder:text-shell-400"
           />
           <button type="button" className="text-shell-400 hover:text-shell-700" onClick={onClose}>
             <X className="h-4 w-4" />

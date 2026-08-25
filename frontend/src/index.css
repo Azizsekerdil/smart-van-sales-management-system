@@ -1,6 +1,20 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../tailwind.config.js';
+
+/*
+ * Tailwind v4 compatibility: v3 gave borders a default color (gray-200 scale
+ * via border settings); v4 defaults to currentColor.  Restore the v3 default
+ * so any border utility without an explicit color keeps its old look.
+ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-shell-200, currentColor);
+  }
+}
 
 @layer base {
   :root {
@@ -47,6 +61,21 @@
   }
 }
 
+/*
+ * Tailwind v4: `@apply` only resolves utilities, so the composable base
+ * classes (`btn`, `badge`) are registered with `@utility` instead of living
+ * in the components layer.  They keep working both as class names in JSX and
+ * as `@apply btn` / `@apply badge` targets below.
+ */
+@utility btn {
+  @apply inline-flex select-none items-center justify-center gap-2 rounded-lg px-3.5 py-2
+         text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+}
+
+@utility badge {
+  @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide;
+}
+
 @layer components {
   .card {
     @apply rounded-xl border border-shell-200 bg-white shadow-card;
@@ -60,10 +89,6 @@
     @apply text-sm font-semibold text-shell-800;
   }
 
-  .btn {
-    @apply inline-flex select-none items-center justify-center gap-2 rounded-lg px-3.5 py-2
-           text-sm font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50;
-  }
   .btn-primary {
     @apply btn bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800;
   }
@@ -82,7 +107,7 @@
 
   .input {
     @apply w-full rounded-lg border border-shell-300 bg-white px-3 py-2 text-sm
-           placeholder:text-shell-400 focus:border-brand-500 focus:outline-none
+           placeholder:text-shell-400 focus:border-brand-500 focus:outline-hidden
            focus:ring-2 focus:ring-brand-500/20 disabled:bg-shell-50;
   }
 
@@ -90,9 +115,6 @@
     @apply mb-1.5 block text-xs font-medium text-shell-600;
   }
 
-  .badge {
-    @apply inline-flex items-center gap-1 rounded-md px-2 py-0.5 text-2xs font-semibold uppercase tracking-wide;
-  }
   .badge-ok {
     @apply badge bg-ok-50 text-ok-700;
   }
@@ -132,7 +154,7 @@
   .skeleton::after {
     content: '';
     @apply absolute inset-0 -translate-x-full animate-shimmer
-           bg-gradient-to-r from-transparent via-white/60 to-transparent;
+           bg-linear-to-r from-transparent via-white/60 to-transparent;
   }
 }
 
