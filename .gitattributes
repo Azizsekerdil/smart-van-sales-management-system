@@ -1,0 +1,4 @@
+# Kabuk betikleri Windows'tan CRLF ile push edilirse macOS/Linux runner
+# "bad interpreter: ^M" hatasi verir; her zaman LF ile saklanir.
+*.sh text eol=lf
+*.bat text eol=crlf
