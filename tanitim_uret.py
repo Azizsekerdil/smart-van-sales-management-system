@@ -610,6 +610,15 @@ SLAYTLAR_TR = [
              "14 derslik uygulama içi eğitim merkezi",
              "TR / EN — anında dil değişimi"]},
 
+    {"tip": "vurgu",
+     "ust": "PLATFORMLAR & İNDİRME",
+     "baslik": "Windows 10/11 (x64) + macOS (Apple Silicon)",
+     "alt": "GitHub Releases üzerinde iki paket yayımlandı: Windows zip + macOS zip. "
+            "macOS paketi Apple Silicon (arm64) içindir ve notarize edilmemiştir — "
+            "ilk açılışta sağ tık → Aç yeterlidir.",
+     "kod": "İndirme: github.com/Azizsekerdil/smart-van-sales-management-system/releases\n"
+            "Sürüm: v1.0.0 — Windows zip · macOS zip"},
+
     {"tip": "kapanis",
      "baslik": "Akıllı Sıcak Satış Yönetim Sistemi",
      "alt": "Sahadaki her hareketi kayda geçiren, gün sonunda hesabı veren sistem",
@@ -928,6 +937,15 @@ SLAYTLAR_EN = [
              "Demo data: 500 customers, 12 months history",
              "14-lesson in-app training centre",
              "TR / EN — instant language switch"]},
+
+    {"tip": "vurgu",
+     "ust": "PLATFORMS & DOWNLOAD",
+     "baslik": "Windows 10/11 (x64) & macOS (Apple Silicon)",
+     "alt": "Two assets are published on GitHub Releases: a Windows zip and a macOS zip. "
+            "The macOS package targets Apple Silicon (arm64) and is not notarized — "
+            "on first launch, right-click → Open.",
+     "kod": "Download: GitHub Releases (v1.0.0)\n"
+            "github.com/Azizsekerdil/smart-van-sales-management-system/releases"},
 
     {"tip": "kapanis",
      "baslik": "Smart Van Sales Management System",
