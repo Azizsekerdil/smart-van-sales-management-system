@@ -18,7 +18,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.core.config import PROJECT_ROOT, settings
+from app.core.config import FRONTEND_DIST, PROJECT_ROOT, settings
 from app.core.exceptions import AppError
 from app.core.i18n import load_catalogues, normalize_language, t
 from app.core.logging_config import get_logger, setup_logging
@@ -164,7 +164,9 @@ def create_app() -> FastAPI:
         return {"status": "ok", "version": settings.app_version, "app": settings.app_name}
 
     # --- Static frontend (served when the SPA has been built) -------------
-    dist = PROJECT_ROOT / "frontend" / "dist"
+    # Geliştirmede proje kökündeki frontend/dist, paketli modda ise paket
+    # içine gömülü kopya kullanılır (bkz. app.core.config.FRONTEND_DIST).
+    dist = FRONTEND_DIST
     if dist.is_dir():
         dist_kok = dist.resolve()
         app.mount("/assets", StaticFiles(directory=dist / "assets"), name="assets")

@@ -10,7 +10,9 @@ Tüm ayarlar ortam değişkenlerinden (``VS_`` öneki) veya proje kökündeki
 
 from __future__ import annotations
 
+import os
 import secrets
+import sys
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -22,9 +24,37 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # Path anchors
 # ---------------------------------------------------------------------------
 # config.py -> core -> app -> backend -> <project root>
-PROJECT_ROOT: Path = Path(__file__).resolve().parents[3]
-BACKEND_ROOT: Path = Path(__file__).resolve().parents[2]
-APP_ROOT: Path = Path(__file__).resolve().parents[1]
+#
+# PyInstaller ile paketlendiğinde (``sys.frozen``) kod, geçici açılma
+# dizininden (``sys._MEIPASS``) çalışır. Bu dizin SALT OKUNUR kabul
+# edilmelidir ve uygulama kapanınca silinir; veritabanı, günlük ve yedekler
+# oraya yazılırsa her açılışta sıfırlanır. Bu yüzden paketli modda yazılabilir
+# kök (PROJECT_ROOT) exe'nin yanındaki klasöre yönlendirilir. Geliştirme
+# modunda davranış değişmez.
+IS_FROZEN: bool = bool(getattr(sys, "frozen", False)) and hasattr(sys, "_MEIPASS")
+
+if IS_FROZEN:
+    #: Salt okunur paket kaynakları (derlenmiş arayüz, çeviri katalogları).
+    FROZEN_RESOURCES: Path = Path(sys._MEIPASS)  # type: ignore[attr-defined]  # noqa: SLF001
+    #: Yazılabilir kök: veritabanı, günlükler, yedekler, yüklemeler buradan
+    #: türetilir. Varsayılan exe'nin yanıdır; VS_DATA_DIR ile değiştirilebilir
+    #: (örneğin exe salt okunur bir konumdaysa).
+    _veri_disaridan = os.environ.get("VS_DATA_DIR", "").strip()
+    PROJECT_ROOT: Path = (
+        Path(_veri_disaridan).resolve()
+        if _veri_disaridan
+        else Path(sys.executable).resolve().parent
+    )
+    BACKEND_ROOT: Path = FROZEN_RESOURCES
+    APP_ROOT: Path = FROZEN_RESOURCES / "app"
+    #: Derlenmiş arayüz, paket içine aynı göreli yerleşimle gömülür
+    #: (bkz. desktop/van_sales.spec).
+    FRONTEND_DIST: Path = FROZEN_RESOURCES / "frontend" / "dist"
+else:
+    PROJECT_ROOT = Path(__file__).resolve().parents[3]
+    BACKEND_ROOT = Path(__file__).resolve().parents[2]
+    APP_ROOT = Path(__file__).resolve().parents[1]
+    FRONTEND_DIST = PROJECT_ROOT / "frontend" / "dist"
 
 
 class Settings(BaseSettings):

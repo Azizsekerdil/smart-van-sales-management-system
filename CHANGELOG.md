@@ -115,6 +115,21 @@ security, licence and truthfulness fixes; none of them is a new business feature
   `LICENSE_DECISION_PENDING.md`, `docs/known-limitations.md`
 - SBOM: `sbom.spdx.json` (SPDX 2.3), `sbom.cdx.json` (CycloneDX 1.7)
 - GitHub Actions CI ve Dependabot yapılandırması
+- **Masaüstü paketi / Desktop package** — PyInstaller ile kurulum gerektirmeyen
+  Windows masaüstü paketi (`dist\VanSales\VanSales.exe`):
+  - `desktop/masaustu.py` — aynı süreçte uvicorn + PyWebView penceresi
+    (PyWebView yoksa varsayılan tarayıcıya düşer); `VS_DESKTOP_PORT` ve
+    `VS_DESKTOP_MODU` (pencere / tarayici / sunucu) ortam değişkenleri
+  - `desktop/van_sales.spec` — SPECPATH'e göreli, taşınabilir PyInstaller
+    yapılandırması (Windows'a özgü kısımlar `sys.platform` ile dallanır)
+  - `scripts/masaustu-paketle.ps1` — tek komutla paketleme betiği
+  - Paketli modda yazılabilir veri kökü (veritabanı, günlük, yedek) exe'nin
+    yanına yönlendirilir (`VS_DATA_DIR` ile değiştirilebilir); arayüz paket
+    içinden aynı kökenden sunulur
+  *Installer-free Windows desktop package built with PyInstaller: in-process
+  uvicorn behind a PyWebView window (falls back to the default browser), a
+  SPECPATH-relative portable spec, and a one-command build script. In frozen
+  mode the writable data root lives next to the executable.*
 
 ### Kaldırıldı / Removed
 

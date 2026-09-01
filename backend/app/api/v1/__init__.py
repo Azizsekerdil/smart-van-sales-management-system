@@ -10,6 +10,7 @@ feature never takes the rest of the system down with it.
 from __future__ import annotations
 
 import importlib
+import importlib.util
 from pathlib import Path
 
 from fastapi import APIRouter
@@ -45,7 +46,15 @@ _HERE = Path(__file__).parent
 
 
 def _module_exists(name: str) -> bool:
-    return (_HERE / f"{name}.py").is_file() or (_HERE / name / "__init__.py").is_file()
+    # Önce diske bakılır (geliştirme modu). Bu tek başına yeterli değildir:
+    # PyInstaller paketinde modüller PYZ arşivinin İÇİNDEDİR ve diskte .py
+    # olarak görünmezler; orada içe aktarma makinesine (find_spec) sorulur.
+    if (_HERE / f"{name}.py").is_file() or (_HERE / name / "__init__.py").is_file():
+        return True
+    try:
+        return importlib.util.find_spec(f"app.api.v1.{name}") is not None
+    except (ImportError, AttributeError, ValueError):
+        return False
 
 
 for _name, _label in _MODULES:
