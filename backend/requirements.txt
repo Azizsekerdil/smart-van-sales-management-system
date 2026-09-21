@@ -22,9 +22,9 @@ uvicorn[standard]==0.52.4         # BSD-3-Clause
 python-multipart==0.0.32          # Apache-2.0 (path traversal + DoS fixes)
 
 # --- Data / ORM ------------------------------------------------------------
-SQLAlchemy==2.0.52                # MIT
-alembic==1.18.2                   # MIT
-pydantic==2.13.4                  # MIT
+SQLAlchemy==2.0.54                # MIT
+alembic==1.20.0                   # MIT
+pydantic==2.13.5                  # MIT
 pydantic-settings==2.15.0         # MIT
 
 # --- Security --------------------------------------------------------------
